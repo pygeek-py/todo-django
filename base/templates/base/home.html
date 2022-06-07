@@ -1,0 +1,147 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+<style type="text/css">
+	.container {
+		width: 100%;
+		max-width: 390px;
+		height: max-content;
+		min-height: 440px;
+		margin: 0 auto;
+		box-shadow: 0px 10px 30px rgb(71, 71, 71);
+		font-family: sans-serif;
+	}
+	.head {
+		background-color: red;
+		color: white;
+		width: 100%;
+		height: 20%;
+		display: flex;
+		justify-content: space-between;
+	}
+	.first {
+		padding-left: 8px;
+		font-size: 23px;
+	}
+	.her {
+		text-decoration: none;
+		color: white;
+		font-weight: 90;
+		padding: 5px;
+	}
+	input {
+		width: 50%;
+		height: max-content;
+		min-height: 30px;
+		margin-left: 5px;
+		background-color: white;
+		color: black;
+		font-size: 15px;
+		border-color: red;
+		border-radius: 5px;
+	}
+	.but {
+		border-radius: 4px;
+		color: red;
+		border: none;
+		height: max-content;
+		min-height: 30px;
+		width: 23%;
+		font-size: 19px;
+		font-weight: 150px;
+		background-color: white;
+	}
+	.fa {
+		font-size: 21px;
+		color: red;
+		margin-right: 7px;
+	}
+	.search {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: max-content;
+	}
+	.all {
+		display: flex;
+		align-items: center;
+		
+	}
+	.fan {
+		width: 14px;
+		height: 14px;
+		border-radius: 20px;
+		background-color: green;
+		margin-left: 4px;
+	}
+	#jug {
+		margin-left: 6px;
+		text-decoration: line-through;
+		font-weight: 80px;
+	}
+	.fans {
+		width: 14px;
+		height: 14px;
+		border-radius: 20px;
+		background-color: gray;
+		margin-left: 4px;
+	}
+	#jugs {
+		margin-left: 6px;
+	}
+	.prov {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	rug {
+		text-decoration: none;
+		color: red;
+	}
+	.hre {
+		text-decoration: none;
+	}
+</style>
+<div class="container">
+<div class="head">
+<p class="first">Hello, {{ request.user.username }}</p>
+<a href="{% url 'logout' %}" class="her">logout</a>
+</div>
+<br>
+<div class="search">
+	<div class="all">
+	<form method="get">
+	{% csrf_token %}
+    {{ filter.form.name }}
+	<input type="submit" placeholder="search..." value="search" class="but">
+</form>
+	</div>
+	<a href="{% url 'create' %}" class="rug"><p class="fa">+</p></a>	
+</div>
+<hr>
+{% for item in item %}
+
+{% if item.done == False %}
+<div class="prov">
+<div class="all">
+<a href="{% url 'update' item.id %}" class="hre"><div class="fans"></div></a><p id="jugs">{{ item.name }}</p>
+</div>
+<a href="{% url 'del_view' item.id %}" class="hre"><p class="fa">+</p></a>
+</div>
+<hr>
+{% endif %}
+
+{% if item.done == True %}
+<div class="prov">
+<div class="all">
+<a href="{% url 'disdate' item.id %}"><div class="fan"></div></a><p id="jug">{{ item.name }}</p>
+</div>
+<a href="{% url 'del_view' item.id %}" class="hre"><p class="fa">+</p></a>
+</div>
+<hr>
+{% endif %}
+{% empty %}
+<h1 class="first">No Task</h1>
+{% endfor %}
+</div>
+{% endblock %}
